@@ -34,6 +34,7 @@ show_thread_nav = True   # delays page load by about 0.04s of 0.20s budget
 prefix = os.environ.get('NMWEB_PREFIX', "https://nmweb.evenmere.org")
 webprefix = os.environ.get('NMWEB_STATIC', prefix + "/static")
 cachedir = os.environ.get('NMWEB_CACHE', "static/cache") # special for webpy server; changeable if using your own
+cachepath = os.environ.get('NMWEB_CACHE_PATH', cachedir) # location of static cache in the local filesystem
 
 if 'NMWEB_DEBUG' in os.environ:
   web.config.debug = True
@@ -322,10 +323,10 @@ def link_to_cached_file(part, mid, counter):
       ext = '.bin'
     filename = 'part-%03d%s' % (counter, ext)
   try:
-    os.makedirs(os.path.join(cachedir, mid))
+    os.makedirs(os.path.join(cachepath, mid))
   except OSError:
     pass
-  fn = os.path.join(cachedir, mid, filename) # FIXME escape mid, filename
+  fn = os.path.join(cachepath, mid, filename) # FIXME escape mid, filename
   fp = open(fn, 'wb')
   if part.get_content_maintype() == 'text':
     data = part.get_payload(decode=True)
@@ -341,7 +342,7 @@ def link_to_cached_file(part, mid, counter):
   if 'Content-ID' in part:
     cid = part['Content-ID']
     if cid[0] == '<' and cid[-1] == '>': cid = cid[1:-1]
-    cid_fn = os.path.join(cachedir, mid, cid) # FIXME escape mid, cid
+    cid_fn = os.path.join(cachepath, mid, cid) # FIXME escape mid, cid
     try:
       os.unlink(cid_fn)
     except OSError:
