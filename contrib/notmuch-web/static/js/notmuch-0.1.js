@@ -27,7 +27,7 @@ $(function(){
   $('.multipart-alternative').tabs()
   });
   $(function(){
-  $('.embedded-html').load(function(){
+      $('.embedded-html').on('load',function(){
       this.style.height = this.contentWindow.document.body.offsetHeight + 'px';
     });
   });
