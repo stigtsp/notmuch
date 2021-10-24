@@ -4,8 +4,11 @@ from __future__ import absolute_import
 
 try:
   from urllib.parse import quote_plus
+  from urllib.parse import unquote_plus
 except ImportError:
   from urllib import quote_plus
+  from urllib import unquote_plus
+
 from datetime import datetime
 from mailbox import MaildirMessage
 import mimetypes
@@ -78,6 +81,7 @@ class search:
     if web.input(terms=None).terms:
       redir = True
       terms = web.input().terms
+    terms = unquote_plus (terms)
     if web.input(afters=None).afters:
       afters = web.input(afters=None).afters[:-3]
     else:
