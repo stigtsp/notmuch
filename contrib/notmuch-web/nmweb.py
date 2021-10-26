@@ -14,7 +14,7 @@ from mailbox import MaildirMessage
 import mimetypes
 import email
 import re
-import cgi
+import html
 import os
 
 import bleach
@@ -265,7 +265,7 @@ def format_message_walk(msg, mid):
         yield '<pre>'
         out = part.get_payload(decode=True)
         out = decodeAnyway(out, part.get_content_charset('ascii'))
-        out = cgi.escape(out)
+        out = html.escape(out)
         out = out.encode('ascii', 'xmlcharrefreplace').decode('ascii')
         if linkify_plaintext: out = bleach.linkify(out, callbacks=[require_protocol_prefix])
         yield out
